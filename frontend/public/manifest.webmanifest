@@ -1,0 +1,18 @@
+{
+  "name": "Expense Tracker",
+  "short_name": "Expenses",
+  "description": "Deterministic mobile-first personal expense and income tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1117",
+  "theme_color": "#0d1117",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

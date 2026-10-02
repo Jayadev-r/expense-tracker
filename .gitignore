@@ -25,6 +25,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.db
+backend/data/*.db
 
 # Environment variables
 .env
