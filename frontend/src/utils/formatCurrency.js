@@ -116,8 +116,18 @@ export function formatDateFull(dateStr) {
 }
 
 /**
- * Get today's date as YYYY-MM-DD string
+ * Format any Date object as local YYYY-MM-DD string without UTC shift
+ */
+export function getLocalDateStr(d = new Date()) {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Get today's date as local YYYY-MM-DD string
  */
 export function getTodayStr() {
-  return new Date().toISOString().split('T')[0];
+  return getLocalDateStr(new Date());
 }

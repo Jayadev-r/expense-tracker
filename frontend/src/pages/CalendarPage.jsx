@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { getTransactions, deleteTransaction, createTransaction, updateTransaction, getCategories } from '../services/api';
-import { formatCurrency } from '../utils/formatCurrency';
+import { formatCurrency, getLocalDateStr } from '../utils/formatCurrency';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default function CalendarPage() {
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+  });
   const [monthTransactions, setMonthTransactions] = useState([]);
   const [selectedTransactions, setSelectedTransactions] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -60,10 +63,9 @@ export default function CalendarPage() {
 
   async function loadMonthTransactions() {
     try {
-      const firstDay = new Date(year, month, 1);
       const lastDay = new Date(year, month + 1, 0);
-      const from = firstDay.toISOString().split('T')[0];
-      const to = lastDay.toISOString().split('T')[0];
+      const from = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+      const to = `${year}-${String(month + 1).padStart(2, '0')}-${String(lastDay.getDate()).padStart(2, '0')}`;
 
       const txns = await getTransactions({ from, to, limit: 300 });
       setMonthTransactions(txns);
@@ -73,7 +75,7 @@ export default function CalendarPage() {
   }
 
   function loadSelectedDayTransactions() {
-    const selStr = selectedDate.toISOString().split('T')[0];
+    const selStr = getLocalDateStr(selectedDate);
     const filtered = monthTransactions.filter((t) => t.transaction_date === selStr);
     setSelectedTransactions(filtered);
   }
@@ -93,8 +95,8 @@ export default function CalendarPage() {
   });
 
   const calendarDays = generateCalendarDays(year, month);
-  const todayStr = new Date().toISOString().split('T')[0];
-  const selectedStr = selectedDate.toISOString().split('T')[0];
+  const todayStr = getLocalDateStr(new Date());
+  const selectedStr = getLocalDateStr(selectedDate);
 
   // Selected day totals
   const selDayIncome = selectedTransactions
@@ -123,7 +125,8 @@ export default function CalendarPage() {
     if (day.otherMonth) {
       setCurrentDate(new Date(day.year, day.month, 1));
     }
-    setSelectedDate(new Date(day.year, day.month, day.day));
+    // Set to local noon (12:00:00) to prevent any midnight UTC/DST boundary shift
+    setSelectedDate(new Date(day.year, day.month, day.day, 12, 0, 0));
   }
 
   // Filtered transactions for selected day
@@ -141,7 +144,7 @@ export default function CalendarPage() {
 
   // Open Add Modal
   function handleOpenAdd() {
-    const selStr = selectedDate.toISOString().split('T')[0];
+    const selStr = getLocalDateStr(selectedDate);
     const defaultCat = categories.find((c) => c.type === 'expense');
     setFormData({
       type: 'expense',
