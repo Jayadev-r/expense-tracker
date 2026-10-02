@@ -1,6 +1,6 @@
 {
-  "name": "Expense Tracker",
-  "short_name": "Expenses",
+  "name": "Trackrr",
+  "short_name": "Trackrr",
   "description": "Deterministic mobile-first personal expense and income tracker",
   "start_url": "/",
   "display": "standalone",

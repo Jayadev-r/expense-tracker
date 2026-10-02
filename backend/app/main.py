@@ -33,8 +33,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Expense Tracker API",
-    description="Personal expense and income tracker with chat-style input",
+    title="Trackrr API",
+    description="Deterministic rule-based personal expense and income tracker API",
     version="1.0.0",
     lifespan=lifespan,
 )

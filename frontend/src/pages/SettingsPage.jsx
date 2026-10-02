@@ -96,12 +96,12 @@ export default function SettingsPage() {
       ].join(',')
     );
     const csv = [header, ...rows].join('\n');
-    downloadFile(csv, 'expense-tracker-export.csv', 'text/csv');
+    downloadFile(csv, 'trackrr-export.csv', 'text/csv');
   }
 
   function exportJSON(transactions) {
     const json = JSON.stringify(transactions, null, 2);
-    downloadFile(json, 'expense-tracker-export.json', 'application/json');
+    downloadFile(json, 'trackrr-export.json', 'application/json');
   }
 
   function downloadFile(content, filename, type) {
@@ -414,7 +414,7 @@ export default function SettingsPage() {
               <span className="settings-item-icon">ℹ️</span>
               <span className="settings-item-label">Version</span>
             </div>
-            <span className="settings-item-value">1.0.0 (PWA Ready)</span>
+            <span className="settings-item-value">Trackrr v1.0.0 (PWA)</span>
           </div>
         </div>
       </div>

@@ -275,6 +275,19 @@ export default function ChatPage() {
     <div className="chat-page">
       {/* Header */}
       <header className="chat-header">
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span style={{
+            fontSize: '12px',
+            fontWeight: 800,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}>
+            Trackrr
+          </span>
+        </div>
         <p className="chat-greeting">{getGreeting()}</p>
         <h1 className="chat-date">{dateDisplay}</h1>
       </header>
