@@ -246,7 +246,18 @@ export default function CalendarPage() {
 
   return (
     <div className="calendar-page">
-      <h1 className="page-title">Calendar</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-sm)' }}>
+        <h1 className="page-title" style={{ margin: 0 }}>Calendar</h1>
+        <button
+          type="button"
+          className="header-add-btn"
+          onClick={handleOpenAdd}
+          title="Add Expense or Income"
+          aria-label="Add transaction"
+        >
+          +
+        </button>
+      </div>
 
       {/* Month Navigation */}
       <div className="calendar-nav">
@@ -692,6 +703,17 @@ export default function CalendarPage() {
           </div>
         </div>
       )}
+
+      {/* Floating Action Button */}
+      <button
+        type="button"
+        className="fab-add-btn"
+        onClick={handleOpenAdd}
+        title="Add Expense or Income"
+        aria-label="Add transaction"
+      >
+        +
+      </button>
     </div>
   );
 }

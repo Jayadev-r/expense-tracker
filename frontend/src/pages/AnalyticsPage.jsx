@@ -5,6 +5,7 @@ import {
   PieChart, Pie, Cell, ResponsiveContainer, Tooltip,
   BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from 'recharts';
+import AddTransactionModal from '../components/AddTransactionModal';
 
 const PERIOD_TABS = ['Week', 'Month'];
 
@@ -12,6 +13,7 @@ export default function AnalyticsPage() {
   const [period, setPeriod] = useState('Month');
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -37,7 +39,18 @@ export default function AnalyticsPage() {
   if (loading || !data) {
     return (
       <div className="analytics-page">
-        <h1 className="page-title">Analytics</h1>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-sm)' }}>
+          <h1 className="page-title" style={{ margin: 0 }}>Analytics</h1>
+          <button
+            type="button"
+            className="header-add-btn"
+            onClick={() => setShowAddModal(true)}
+            title="Add Expense or Income"
+            aria-label="Add transaction"
+          >
+            +
+          </button>
+        </div>
         <div className="period-tabs">
           {PERIOD_TABS.map((tab) => (
             <button
@@ -52,6 +65,11 @@ export default function AnalyticsPage() {
         <div className="chat-messages-empty">
           <p className="empty-title loading">Loading...</p>
         </div>
+        <AddTransactionModal
+          isOpen={showAddModal}
+          onClose={() => setShowAddModal(false)}
+          onSuccess={loadData}
+        />
       </div>
     );
   }
@@ -89,7 +107,18 @@ export default function AnalyticsPage() {
 
   return (
     <div className="analytics-page">
-      <h1 className="page-title">Analytics</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-sm)' }}>
+        <h1 className="page-title" style={{ margin: 0 }}>Analytics</h1>
+        <button
+          type="button"
+          className="header-add-btn"
+          onClick={() => setShowAddModal(true)}
+          title="Add Expense or Income"
+          aria-label="Add transaction"
+        >
+          +
+        </button>
+      </div>
 
       {/* Period Tabs */}
       <div className="period-tabs" role="tablist">
@@ -268,6 +297,24 @@ export default function AnalyticsPage() {
           )}
         </>
       )}
+
+      {/* Floating Action Button */}
+      <button
+        type="button"
+        className="fab-add-btn"
+        onClick={() => setShowAddModal(true)}
+        title="Add Expense or Income"
+        aria-label="Add transaction"
+      >
+        +
+      </button>
+
+      {/* Add Transaction Modal */}
+      <AddTransactionModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={loadData}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { sendChatMessage, sendChatWithCategory, getTodaySummary, deleteTransacti
 import { getGreeting, formatDate, getTodayStr } from '../utils/formatCurrency';
 import DaySummary from '../components/DaySummary';
 import ChatMessage from '../components/ChatMessage';
+import AddTransactionModal from '../components/AddTransactionModal';
 
 const UNDO_TIMEOUT_MS = 8000;
 
@@ -10,6 +11,7 @@ export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [sending, setSending] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
   const [summary, setSummary] = useState({ income: 0, expenses: 0, net: 0, transaction_count: 0 });
   const [quickCategories, setQuickCategories] = useState([]);
   const messagesEndRef = useRef(null);
@@ -287,6 +289,15 @@ export default function ChatPage() {
           }}>
             Trackrr
           </span>
+          <button
+            type="button"
+            className="header-add-btn"
+            onClick={() => setShowAddModal(true)}
+            title="Add Expense or Income"
+            aria-label="Add transaction"
+          >
+            +
+          </button>
         </div>
         <p className="chat-greeting">{getGreeting()}</p>
         <h1 className="chat-date">{dateDisplay}</h1>
@@ -336,35 +347,57 @@ export default function ChatPage() {
 
       {/* Input Area */}
       <div className="chat-input-area">
-        <div className="chat-input-wrapper">
-          <input
-            ref={inputRef}
-            type="text"
-            className="chat-input"
-            placeholder="Enter expense or income..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={handleKeyDown}
-            disabled={sending}
-            aria-label="Transaction input"
-            autoComplete="off"
-            enterKeyHint="send"
-            id="chat-input"
-          />
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', width: '100%' }}>
           <button
-            className="chat-send-btn"
-            onClick={handleSend}
-            disabled={!inputValue.trim() || sending}
-            aria-label="Send transaction"
-            id="chat-send"
+            type="button"
+            className="chat-quick-add-btn"
+            onClick={() => setShowAddModal(true)}
+            title="Manual Add Expense / Income"
+            aria-label="Add transaction manually"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg>
+            +
           </button>
+          <div className="chat-input-wrapper" style={{ flex: 1 }}>
+            <input
+              ref={inputRef}
+              type="text"
+              className="chat-input"
+              placeholder="Enter expense or income..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={handleKeyDown}
+              disabled={sending}
+              aria-label="Transaction input"
+              autoComplete="off"
+              enterKeyHint="send"
+              id="chat-input"
+            />
+            <button
+              className="chat-send-btn"
+              onClick={handleSend}
+              disabled={!inputValue.trim() || sending}
+              aria-label="Send transaction"
+              id="chat-send"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />
+                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Manual Add Transaction Modal */}
+      <AddTransactionModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onSuccess={() => {
+          loadSummary();
+          loadTodayHistory();
+          loadQuickCategories();
+        }}
+      />
     </div>
   );
 }
