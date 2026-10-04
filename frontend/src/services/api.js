@@ -2,10 +2,12 @@
  * API client for the Expense Tracker backend.
  */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000/api').replace(/\/$/, '');
 
 async function request(endpoint, options = {}) {
-  const url = `${API_BASE}${endpoint}`;
+  // Ensure endpoint starts with a slash
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+  const url = `${API_BASE}${cleanEndpoint}`;
   const config = {
     headers: {
       'Content-Type': 'application/json',

@@ -37,7 +37,7 @@ def get_transactions(
     type: Optional[str] = Query(None),
     category_id: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
-    limit: int = Query(50, ge=1, le=200),
+    limit: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
 ):
