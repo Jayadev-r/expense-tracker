@@ -149,8 +149,29 @@
 html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbars for desktop (Windows Chrome, Edge, Firefox) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.25);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.45);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(150, 150, 150, 0.25) transparent;
 }
 
 body {
@@ -158,9 +179,17 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
-  background-color: var(--color-bg);
+  background-color: #0A0D12;
   overflow-x: hidden;
   min-height: 100dvh;
+}
+
+html:not([data-theme="dark"]) body {
+  background-color: #ECEEF2;
+}
+
+html[data-theme="dark"] body {
+  background-color: #0A0D12;
 }
 
 #root {
@@ -172,6 +201,7 @@ body {
 a {
   color: var(--color-accent);
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
@@ -181,14 +211,35 @@ button {
   background: none;
   outline: none;
   font-size: inherit;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* Ensure inputs never cause iOS Safari viewport auto-zoom (min 16px) */
 input, textarea, select {
   font-family: var(--font-family);
-  font-size: var(--font-size-md);
+  font-size: 16px;
   outline: none;
   border: none;
   background: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hide spin buttons on number inputs across WebKit and Firefox */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Cross-browser native date inputs */
+input[type="date"] {
+  color-scheme: light dark;
 }
 
 ul, ol {
@@ -211,6 +262,16 @@ img {
   flex-direction: column;
   position: relative;
   background-color: var(--color-bg);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 480px) {
+  body {
+    background-color: var(--color-bg) !important;
+  }
+  .app-container {
+    box-shadow: none;
+  }
 }
 
 .page-content {
